@@ -2,6 +2,7 @@ const formLoader = document.querySelector('.loader');
 const btnAddProduct = document.querySelector('#addLink');
 const btnProducts = document.querySelector('#productsLink');
 const content = document.querySelector('.content');
+let list = document.querySelectorAll("ul li");
 
 formLoader.addEventListener('change', event => {
     let productType = event.target.value;
@@ -28,6 +29,8 @@ formLoader.addEventListener('change', event => {
 btnAddProduct.onclick = event => {
     formLoader.style.display = 'flex';
     content.style.display = 'none';
+    list[1].classList.toggle('active');
+    list[0].classList.toggle('active');
 }
 let productType;
 const productTypeSelect = document.querySelector('#type');
@@ -39,7 +42,6 @@ formLoader.onsubmit = event => {
     let res = {};
     switch (productType) {
         case 'milk':
-            console.log('MIlk created');
             res = new Milk(
                 event.target.elements.id.value,
                 event.target.elements.title.value,
@@ -69,7 +71,6 @@ formLoader.onsubmit = event => {
             break;
     }
     store.add(res);
-    console.log(store);
     formLoader.reset();
 };
 
@@ -81,8 +82,9 @@ function renderStoreList(all, card) {
 btnProducts.onclick = e => {
     formLoader.style.display = 'none';
     content.style.display = 'flex';
+    list[1].classList.toggle('active');
+    list[0].classList.toggle('active');
     renderStoreList(store.getAll(), card);
-    console.log(store)
 }
 
 function card(product) {
@@ -104,9 +106,25 @@ function getOwnProperty(product) {
         else return `   `;
 }
 
-//---------
+//---------jQuery / getByType-------
+$('.side-nav ul li:nth-child(2)').on('click',function () {
+    renderStoreList(store.getByType('Milk'),card);
+});
+$('.side-nav ul li:nth-child(3)').on('click',function () {
+    renderStoreList(store.getByType('Chocolate'),card);
+});
+$('.side-nav ul li:nth-child(4)').on('click',function () {
+    renderStoreList(store.getByType('Wine'),card);
+});
+//----method search---
+$('input[name="search"]').on("keypress", function() {
+    let searchValue = $(this).val();
+    if (searchValue === 'Milk' || searchValue === 'Chocolate'
+        || searchValue === 'Wine') {
+        formLoader.style.display = 'none';
+        content.style.display = 'flex';
 
-
-
-
-
+        renderStoreList(store.getByType(searchValue), card);
+        $(this).val('');
+    }
+});
