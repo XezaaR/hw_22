@@ -1,4 +1,4 @@
-// (()=>{
+
     class Product{
         id;
         title;
@@ -50,14 +50,6 @@
                 this.products.push(product);
             }
         }
-        // add(product){
-        //     if(this.products.find(t => t.id === product.id))
-        //         return false;
-        //     else{
-        //         this.products.push(product);
-        //         return true;
-        //     }
-        // }
         getAll() {
             return [...this.products];
         }
@@ -74,4 +66,5 @@
     store.add(milk);
     store.add(chocolate);
     store.add(wine);
-// })();
+
+console.log(store.getByType(Milk))
